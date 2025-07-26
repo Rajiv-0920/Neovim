@@ -24,9 +24,7 @@ brew install --cask font-jetbrains-mono
 ## 2. Directory Structure
 
 ```bash
-mkdir -p ~/.config/nvim/lua/plugins
-mkdir -p ~/.config/nvim/lua/themes
-mkdir -p ~/.config/nvim/after/plugin
+config/nvim/lua/
 ```
 
 ---
