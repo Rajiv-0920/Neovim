@@ -10,7 +10,7 @@ return {
     local formatting = null_ls.builtins.formatting
     local diagnostics = null_ls.builtins.diagnostics
 
-    -- Setup mason-null-ls
+    -- Setup mason-null-ls to install required tools automatically
     require('mason-null-ls').setup {
       ensure_installed = {
         'prettier',
@@ -26,7 +26,7 @@ return {
       automatic_installation = true,
     }
 
-    -- Define sources
+    -- Define all sources (no filetypes needed for prettier)
     local sources = {
       -- Diagnostics
       require 'none-ls.diagnostics.eslint_d',
@@ -35,19 +35,7 @@ return {
       diagnostics.cppcheck,
 
       -- Formatters
-      formatting.prettier.with {
-        filetypes = {
-          'javascript',
-          'typescript',
-          'vue',
-          'css',
-          'scss',
-          'html',
-          'json',
-          'yaml',
-          'markdown',
-        },
-      },
+      formatting.prettier, -- auto handles all default supported types
       formatting.stylua,
       formatting.shfmt.with { extra_args = { '-i', '4' } },
       formatting.terraform_fmt,
@@ -58,18 +46,16 @@ return {
       formatting.clang_format,
     }
 
-    -- Autoformatting group
+    -- Autoformatting on save
     local augroup = vim.api.nvim_create_augroup('LspFormatting', { clear = true })
 
-    -- Setup none-ls with conditional autoformatting
     null_ls.setup {
       sources = sources,
       on_attach = function(client, bufnr)
         if client.supports_method 'textDocument/formatting' then
-          local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
           local filename = vim.api.nvim_buf_get_name(bufnr)
 
-          -- Disable autoformat for .env files
+          -- Skip formatting for .env files
           if filename:match '%.env' then
             return
           end

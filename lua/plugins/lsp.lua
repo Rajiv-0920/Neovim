@@ -40,6 +40,7 @@ return {
           'dockerls',
           'gopls',
           'rust_analyzer',
+          'tailwindcss', -- ✅ Added Tailwind CSS LSP
         },
         automatic_installation = true,
       }
@@ -85,6 +86,7 @@ return {
         rust_analyzer = {},
         eslint = {},
         marksman = {},
+        tailwindcss = {}, -- ✅ Tailwind config added here
       }
 
       -- 🔁 Loop through servers
